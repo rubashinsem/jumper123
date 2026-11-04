@@ -12,6 +12,14 @@
     user-select:none;-webkit-user-select:none;font-family:system-ui,-apple-system,sans-serif;-webkit-tap-highlight-color:transparent}
   canvas#c{display:block;width:100vw;height:100vh;touch-action:none}
   .hidden{display:none!important}
+  .ico{display:inline-block;width:1.2em;height:1.2em;vertical-align:-.25em;flex-shrink:0}
+  .ico svg{width:100%;height:100%;display:block;overflow:visible}
+  .ic .ico{width:30px;height:30px}
+  .sethead .ic .ico{width:24px;height:24px}
+  .chestBtn .chest .ico{width:34px;height:34px}
+  .offerChest .ico{width:84px;height:84px}
+  .card .q .ico{width:34px;height:34px}
+  .card .tick .ico{width:14px;height:14px}
   .screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;color:#fff}
 
   /* --- кнопки --- */
@@ -47,17 +55,37 @@
   /* --- плашки, монеты, заголовки --- */
   .chip{background:var(--glass);padding:7px 14px;border-radius:999px;font-weight:800;font-size:16px;
     display:inline-flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
-  .coin{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;box-sizing:border-box;vertical-align:-1px;
-    background:linear-gradient(135deg,#fff6c2,#ffcb2e 50%,#f29d00);border:2px solid #d98a00;box-shadow:1px 1px 0 #b8730b}
-  .coin::after{content:'★';font-size:9px;line-height:1;color:#fff3b0;text-shadow:0 1px 0 #e08e00}
+  /* монета целиком нарисована (звезда — svg), без шрифтовых символов */
+  .coin{display:inline-block;width:16px;height:16px;border-radius:50%;box-sizing:border-box;vertical-align:middle;margin-top:-3px;flex-shrink:0;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3.5l2.5 5.3 5.8.7-4.3 4 1.1 5.7L12 16.4l-5.1 2.8 1.1-5.7-4.3-4 5.8-.7z' fill='%23fff3b0' stroke='%23d98a00' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E") center/62% no-repeat,linear-gradient(135deg,#fff6c2,#ffcb2e 50%,#f29d00);border:2px solid #d98a00;box-shadow:1px 1px 0 #b8730b}
+  .pricepill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.45);padding:3px 10px;border-radius:10px;margin-left:6px;vertical-align:middle}
+  .pricepill .coin{margin-top:0}
+  #offGo{display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;font-size:15px;padding-left:12px;padding-right:12px}
+  #offGo .pricepill{margin-left:2px;padding:3px 8px}
   .coin.big{width:28px;height:28px;border-width:3px;vertical-align:-5px}
-  .coin.big::after{font-size:15px}
   .title{font-size:30px;font-weight:900;letter-spacing:.5px;color:#fff;text-shadow:0 4px 0 var(--ts,#1565c0),0 8px 16px rgba(0,0,0,.25)}
   .sub{opacity:.85;font-size:14px;font-weight:600;text-align:center}
 
   /* --- главное меню --- */
   #sMenu{justify-content:flex-start;padding:12px 16px calc(16px + env(safe-area-inset-bottom));gap:10px;box-sizing:border-box}
-  .topbar{width:100%;display:flex;justify-content:space-between}
+  .topbar{width:100%;display:flex;justify-content:space-between;align-items:flex-start}
+  .topcol{position:relative}
+  .hourly{position:absolute;top:100%;left:0;margin-top:6px;white-space:nowrap;font-size:12px;font-weight:800;background:var(--glass);padding:3px 10px;border-radius:999px;display:flex;align-items:center;gap:4px}
+  .chip.bump{animation:pop .35s}
+  /* мыльный пузырь с ежечасным бонусом */
+  .bubble{position:absolute;left:0;top:0;width:84px;height:84px;border:0;padding:0;background:none;z-index:3;cursor:pointer;will-change:transform}
+  .bubble .bb{position:absolute;inset:0;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+    background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.95) 0 6%,rgba(255,255,255,.25) 13%,rgba(255,255,255,.05) 38%,rgba(160,200,255,.14) 60%,rgba(255,140,220,.32) 78%,rgba(120,255,220,.45) 91%,rgba(255,255,255,.75) 100%);
+    box-shadow:inset -7px -9px 14px rgba(120,80,255,.22),inset 5px 6px 10px rgba(255,255,255,.3),0 8px 20px rgba(0,0,0,.12);
+    animation:wobble 2.4s ease-in-out infinite}
+  .bubble .bb b{font:900 17px system-ui,sans-serif;color:#fff;text-shadow:0 2px 0 #c67c00,0 0 6px rgba(0,0,0,.3)}
+  .bubble::before{content:'';position:absolute;inset:-6px;border-radius:50%;pointer-events:none;opacity:0}
+  .bubble.popping .bb{animation:popB .28s ease-out forwards}
+  .bubble.popping::before{border:3px solid rgba(255,255,255,.9);animation:ring .35s ease-out forwards}
+  @keyframes wobble{0%,100%{transform:scale(1,1)}25%{transform:scale(1.05,.95)}50%{transform:scale(.97,1.03)}75%{transform:scale(1.03,.97)}}
+  @keyframes popB{to{transform:scale(1.5);opacity:0}}
+  @keyframes ring{from{transform:scale(.9);opacity:1}to{transform:scale(1.9);opacity:0}}
+  .coin.fly{position:fixed;left:0;top:0;width:22px;height:22px;z-index:20;pointer-events:none}
   .logo{display:flex;margin-top:1vh}
   .logo span{font-size:58px;font-weight:900;display:inline-block;color:var(--c);-webkit-text-stroke:2px #fff;
     text-shadow:0 5px 0 var(--sh),0 12px 20px rgba(0,0,0,.25);animation:wave 2.6s ease-in-out infinite}
@@ -218,13 +246,14 @@
 </head>
 <body>
 <canvas id="c"></canvas>
-<button id="bPause" class="round hidden">❚❚</button>
+<button id="bPause" class="round hidden"><i class="ico" data-i="pause"></i></button>
 
 <!-- Главное меню -->
 <div class="screen" id="sMenu">
+  <button id="bubble" class="bubble hidden" aria-label="Забрать 50 монет"><span class="bb"><span class="coin big"></span><b>+50</b></span></button>
   <div class="topbar">
-    <div class="chip"><span class="coin"></span><b class="coinsVal">0</b></div>
-    <div class="chip">🏆 <b id="mBest">0</b></div>
+    <div class="topcol"><div class="chip" id="coinChip"><span class="coin"></span><b class="coinsVal">0</b></div><div class="hourly hidden" id="hourly"></div></div>
+    <div class="chip"><i class="ico" data-i="trophy"></i> <b id="mBest">0</b></div>
   </div>
   <div class="logo" id="logo"></div>
   <div class="tagline">прыгай выше всех!</div>
@@ -234,12 +263,12 @@
     <div class="mapinfo"><div class="mapname" id="mMap"></div><div class="dots" id="mapDots"></div></div>
     <button class="round" id="mapNext">›</button>
   </div>
-  <button class="btn play" id="bPlay">▶ ИГРАТЬ</button>
-  <button class="btn gold pulse hidden" id="bSuper">⭐ Супер-игра ×<span id="superN">1</span></button>
+  <button class="btn play" id="bPlay"><i class="ico" data-i="play"></i> ИГРАТЬ</button>
+  <button class="btn gold pulse hidden" id="bSuper"><i class="ico" data-i="star"></i> Супер-игра ×<span id="superN">1</span></button>
   <div class="dock">
-    <button class="tile" id="bInv"><i class="ic">🎒</i><span>Инвентарь</span></button>
-    <button class="tile" id="bBonus"><i class="ic">🎁</i><span>Бонус</span><i class="dot hidden" id="bonusDot"></i></button>
-    <button class="tile" id="bSet"><i class="ic">⚙️</i><span>Настройки</span></button>
+    <button class="tile" id="bInv"><i class="ic"><i class="ico" data-i="bag"></i></i><span>Инвентарь</span></button>
+    <button class="tile" id="bBonus"><i class="ic"><i class="ico" data-i="gift"></i></i><span>Бонус</span><i class="dot hidden" id="bonusDot"></i></button>
+    <button class="tile" id="bSet"><i class="ic"><i class="ico" data-i="gear"></i></i><span>Настройки</span></button>
   </div>
 </div>
 
@@ -247,8 +276,8 @@
 <div class="panel hidden" id="sInv">
   <div class="bar"><button class="round back">‹</button><div class="title">Инвентарь</div><span class="chip"><span class="coin"></span><b class="coinsVal">0</b></span></div>
   <div class="tabs">
-    <button data-tab="skin">🧸 Скины <span id="cntSkin"></span></button>
-    <button data-tab="map">🗺 Карты <span id="cntMap"></span></button>
+    <button data-tab="skin"><i class="ico" data-i="hero"></i> Скины <span id="cntSkin"></span></button>
+    <button data-tab="map"><i class="ico" data-i="map"></i> Карты <span id="cntMap"></span></button>
   </div>
   <div class="hero">
     <canvas id="heroCv"></canvas>
@@ -270,8 +299,8 @@
   <div class="center">
     <div class="wheelWrap"><div class="pointer"></div><canvas id="wheel"></canvas></div>
     <div id="bonusRes" class="res"></div>
-    <button class="btn gold" id="bSpin">🎡 Крутить!</button>
-    <button class="btn hidden" id="bPlaySuper">⭐ Играть супер-игру</button>
+    <button class="btn gold" id="bSpin"><i class="ico" data-i="wheel"></i> Крутить!</button>
+    <button class="btn hidden" id="bPlaySuper"><i class="ico" data-i="star"></i> Играть супер-игру</button>
     <div id="bonusTimer" class="sub"></div>
   </div>
 </div>
@@ -281,15 +310,15 @@
   <div class="bar"><button class="round back">‹</button><div class="title">Настройки</div></div>
   <div class="setlist">
     <div class="setrow blue">
-      <div class="sethead"><i class="ic">🎮</i><div><b>Управление</b><small>Касания — жми слева/справа. Наклон — наклоняй телефон.</small></div></div>
-      <div class="seg" data-key="ctrl"><button data-v="touch">👆 Касания</button><button data-v="tilt">📱 Наклон</button></div>
+      <div class="sethead"><i class="ic"><i class="ico" data-i="pad"></i></i><div><b>Управление</b><small>Касания — жми слева/справа. Наклон — наклоняй телефон.</small></div></div>
+      <div class="seg" data-key="ctrl"><button data-v="touch"><i class="ico" data-i="tap"></i> Касания</button><button data-v="tilt"><i class="ico" data-i="tilt"></i> Наклон</button></div>
     </div>
     <div class="setrow purple">
-      <div class="sethead"><i class="ic">📳</i><div><b>Вибрация</b><small>Отклик при прыжках и наградах</small></div></div>
+      <div class="sethead"><i class="ic"><i class="ico" data-i="vibro"></i></i><div><b>Вибрация</b><small>Отклик при прыжках и наградах</small></div></div>
       <div class="seg" data-key="vibro"><button data-v="1">Вкл</button><button data-v="0">Выкл</button></div>
     </div>
     <div class="setrow blue">
-      <div class="sethead"><i class="ic">✨</i><div><b>Графика</b><small>«Экономия» — для слабых телефонов. «Авто» включит её сама, если игра тормозит.</small></div></div>
+      <div class="sethead"><i class="ic"><i class="ico" data-i="sparkle"></i></i><div><b>Графика</b><small>«Экономия» — для слабых телефонов. «Авто» включит её сама, если игра тормозит.</small></div></div>
       <div class="seg" data-key="gfx"><button data-v="auto">Авто</button><button data-v="high">Высокая</button><button data-v="low">Экономия</button></div>
     </div>
   </div>
@@ -299,8 +328,8 @@
 <div class="screen dim hidden" id="sPause">
   <div class="sheet">
     <div class="title" style="--ts:#4b2a8f">Пауза</div>
-    <button class="btn" id="bResume">▶ Продолжить</button>
-    <button class="btn blue" id="bQuit">🏠 В меню</button>
+    <button class="btn" id="bResume"><i class="ico" data-i="play"></i> Продолжить</button>
+    <button class="btn blue" id="bQuit"><i class="ico" data-i="home"></i> В меню</button>
   </div>
 </div>
 
@@ -309,14 +338,14 @@
   <div class="sheet">
     <div class="title" style="--ts:#b71c1c;font-size:26px">Игра окончена</div>
     <div class="score" id="oScore">0</div>
-    <div class="badge hidden" id="oNew">🏆 Новый рекорд!</div>
+    <div class="badge hidden" id="oNew"><i class="ico" data-i="trophy"></i> Новый рекорд!</div>
     <div class="stats">
-      <span class="chip">🏆 <b id="oBest">0</b></span>
+      <span class="chip"><i class="ico" data-i="trophy"></i> <b id="oBest">0</b></span>
       <span class="chip"><span class="coin"></span><b id="oCoins">+0</b></span>
     </div>
     <div class="sub" id="oDetail"></div>
-    <button class="btn" id="bAgain">↻ Ещё раз</button>
-    <button class="btn blue" id="bMenu">🏠 В меню</button>
+    <button class="btn" id="bAgain"><i class="ico" data-i="again"></i> Ещё раз</button>
+    <button class="btn blue" id="bMenu"><i class="ico" data-i="home"></i> В меню</button>
   </div>
 </div>
 
@@ -324,7 +353,7 @@
 <div class="screen dim hidden" id="sOffer" style="z-index:7">
   <div class="rays"></div>
   <div class="sheet">
-    <div class="offerChest">🎁</div>
+    <div class="offerChest"><i class="ico" data-i="gift"></i></div>
     <div class="title" style="--ts:#c67c00;color:#ffe082;font-size:26px" id="offTitle">Хватает на сундук!</div>
     <div class="sub" id="offText"></div>
     <button class="btn gold" id="offGo"></button>
@@ -339,7 +368,7 @@
     <div class="title" id="winTitle" style="--ts:#c67c00;color:#ffe082"></div>
     <div id="winPic"></div>
     <div id="winName"></div>
-    <button class="btn" id="bWinUse">✓ Выбрать</button>
+    <button class="btn" id="bWinUse"><i class="ico" data-i="check"></i> Выбрать</button>
     <button class="btn blue" id="bWinOk">Ок</button>
   </div>
 </div>
@@ -351,17 +380,59 @@
 const tg = window.Telegram && Telegram.WebApp;
 const tgv = v => !!(tg && tg.isVersionAtLeast && tg.isVersionAtLeast(v));
 if (tg) { tg.ready(); tg.expand(); if (tg.disableVerticalSwipes) tg.disableVerticalSwipes(); }
-const HF = () => (save.vibro && tg && tg.HapticFeedback) || null;
-const hap = t => { try { HF() && HF().impactOccurred(t); } catch (e) {} };
-const notify = t => { try { HF() && HF().notificationOccurred(t); } catch (e) {} };
-const sel = () => { try { HF() && HF().selectionChanged(); } catch (e) {} };
+// Вибрация: в Telegram — его HapticFeedback, в обычном браузере (Android) — navigator.vibrate
+const tgHaptic = () => (tgv('6.1') && tg.HapticFeedback) || null;
+const vib = p => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} };
+const hap = t => {
+  if (!save.vibro) return;
+  const H = tgHaptic();
+  if (H) { try { H.impactOccurred(t); } catch (e) {} } else vib(t === 'heavy' ? 40 : t === 'medium' ? 25 : 12);
+};
+const notify = t => {
+  if (!save.vibro) return;
+  const H = tgHaptic();
+  if (H) { try { H.notificationOccurred(t); } catch (e) {} } else vib(t === 'error' ? [60, 40, 60] : [20, 40, 30]);
+};
+const sel = () => {
+  if (!save.vibro) return;
+  const H = tgHaptic();
+  if (H) { try { H.selectionChanged(); } catch (e) {} } else vib(8);
+};
 const BB = tgv('6.1') ? tg.BackButton : null;
 const setBack = on => { if (BB) on ? BB.show() : BB.hide(); };
+
+// ================= Свои иконки (вместо системных эмодзи) =================
+const ICONS = {
+  trophy: '<path d="M7 3h10v4a5 5 0 0 1-10 0z" fill="#ffca28" stroke="#b8860b" stroke-width="1.5"/><path d="M7 5H4v1a3 3 0 0 0 3 3M17 5h3v1a3 3 0 0 1-3 3" fill="none" stroke="#b8860b" stroke-width="1.5"/><rect x="10.5" y="11.8" width="3" height="3.6" fill="#ffb300"/><rect x="7.5" y="15.5" width="9" height="4" rx="1.2" fill="#ffca28" stroke="#b8860b" stroke-width="1.5"/><path d="M9 4.5v2.5" stroke="#fff8e1" stroke-width="1.4" stroke-linecap="round"/>',
+  map: '<path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z" fill="#81d4fa" stroke="#1565c0" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 4v14M15 6v14" stroke="#1565c0" stroke-width="1.2"/><path d="M5 14c2-1 3 1 5 0" stroke="#43a047" stroke-width="1.4" fill="none"/><circle cx="12" cy="10" r="2" fill="#e53935" stroke="#fff" stroke-width=".8"/>',
+  play: '<path d="M7 4.5v15l13-7.5z" fill="currentColor" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>',
+  pause: '<rect x="6" y="5" width="4" height="14" rx="1.6" fill="#37474f"/><rect x="14" y="5" width="4" height="14" rx="1.6" fill="#37474f"/>',
+  bag: '<path d="M9 7V5.5a3 3 0 0 1 6 0V7" fill="none" stroke="#8e1c1c" stroke-width="1.8"/><rect x="4.5" y="7" width="15" height="14" rx="4.5" fill="#ef5350" stroke="#8e1c1c" stroke-width="1.5"/><rect x="8" y="13" width="8" height="5.5" rx="1.6" fill="#ff8a80" stroke="#8e1c1c" stroke-width="1.2"/><path d="M8 13.2h8" stroke="#8e1c1c" stroke-width="1"/><path d="M7 9.5h3" stroke="#ffcdd2" stroke-width="1.4" stroke-linecap="round"/>',
+  gift: '<rect x="4" y="10" width="16" height="11" rx="2" fill="#ef5350" stroke="#8e1c1c" stroke-width="1.5"/><rect x="3" y="7" width="18" height="4.2" rx="1.5" fill="#ff7043" stroke="#8e1c1c" stroke-width="1.5"/><rect x="10.6" y="7" width="2.8" height="14" fill="#ffd54f"/><path d="M12 7C10 3 6 3.4 7 6c.8 1.6 5 1 5 1zM12 7c2-4 6-3.6 5-1-.8 1.6-5 1-5 1z" fill="#ffd54f" stroke="#c67c00" stroke-width="1.1"/>',
+  gear: '<path d="M12 2.5l1.7 2.4 2.9-.7.6 2.9 2.7 1.3-1.1 2.7 1.1 2.7-2.7 1.3-.6 2.9-2.9-.7L12 21.5l-1.7-2.4-2.9.7-.6-2.9L4.1 15.6l1.1-2.7-1.1-2.7 2.7-1.3.6-2.9 2.9.7z" fill="#eceff1" stroke="#455a64" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.6" fill="#90a4ae" stroke="#455a64" stroke-width="1.4"/>',
+  hero: '<rect x="4" y="5" width="16" height="15" rx="5" fill="#ff9800" stroke="#e65100" stroke-width="1.5"/><circle cx="9.5" cy="11" r="2.4" fill="#fff"/><circle cx="14.5" cy="11" r="2.4" fill="#fff"/><circle cx="10" cy="11.3" r="1.15" fill="#222"/><circle cx="15" cy="11.3" r="1.15" fill="#222"/><path d="M10.2 15.2q1.8 1.5 3.6 0" stroke="#5d2a00" stroke-width="1.3" fill="none" stroke-linecap="round"/><ellipse cx="8" cy="7.4" rx="2.4" ry="1" fill="#fff" opacity=".45"/>',
+  star: '<path d="M12 2.5l2.9 6 6.6.8-4.9 4.5 1.3 6.5L12 17l-5.9 3.3 1.3-6.5L2.5 9.3l6.6-.8z" fill="#ffd54f" stroke="#c67c00" stroke-width="1.5" stroke-linejoin="round"/><path d="M10.5 7.5l-1 2" stroke="#fff8e1" stroke-width="1.3" stroke-linecap="round"/>',
+  wheel: '<circle cx="12" cy="12" r="9.5" fill="#6a1b9a"/><path d="M12 12V3.5A8.5 8.5 0 0 1 19.4 7.8z" fill="#ef5350"/><path d="M12 12l7.4-4.2a8.5 8.5 0 0 1 0 8.5z" fill="#ffca28"/><path d="M12 12l7.4 4.2A8.5 8.5 0 0 1 12 20.5z" fill="#42a5f5"/><path d="M12 12v8.5a8.5 8.5 0 0 1-7.4-4.2z" fill="#66bb6a"/><path d="M12 12l-7.4 4.2a8.5 8.5 0 0 1 0-8.5z" fill="#ab47bc"/><path d="M12 12L4.6 7.8A8.5 8.5 0 0 1 12 3.5z" fill="#26c6da"/><circle cx="12" cy="12" r="2.3" fill="#fff" stroke="#6a1b9a" stroke-width="1"/>',
+  pad: '<path d="M6.5 8h11a4.5 4.5 0 0 1 4.5 4.5v.5a4 4 0 0 1-7 2.6l-.8-.6h-4.4l-.8.6A4 4 0 0 1 2 13v-.5A4.5 4.5 0 0 1 6.5 8z" fill="#fff" stroke="#263238" stroke-width="1.5"/><path d="M7 10.6v3.2M5.4 12.2h3.2" stroke="#263238" stroke-width="1.7" stroke-linecap="round"/><circle cx="16" cy="11" r="1.2" fill="#ef5350"/><circle cx="18.2" cy="13.2" r="1.2" fill="#42a5f5"/>',
+  vibro: '<rect x="8" y="3" width="8" height="18" rx="2.2" fill="#fff" stroke="#263238" stroke-width="1.5"/><rect x="9.6" y="5.2" width="4.8" height="11" rx=".8" fill="#b39ddb"/><path d="M5 8.5v7M2.8 10.5v3M19 8.5v7M21.2 10.5v3" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/>',
+  sparkle: '<path d="M11 2.5l2 6.5 6.5 2-6.5 2-2 6.5-2-6.5-6.5-2 6.5-2z" fill="#fff59d" stroke="#f9a825" stroke-width="1.3" stroke-linejoin="round"/><path d="M18.5 14l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z" fill="#fff"/>',
+  tap: '<circle cx="12" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".45"/><circle cx="12" cy="10" r="4" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".75"/><circle cx="12" cy="10" r="1.8" fill="currentColor"/><path d="M12 13v7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>',
+  tilt: '<g transform="rotate(-20 12 12)"><rect x="7.5" y="3" width="9" height="18" rx="2.2" fill="currentColor"/><rect x="9" y="5" width="6" height="12" rx="1" fill="#90caf9"/></g><path d="M2.8 15.5A9.5 9.5 0 0 1 4 8.5M21.2 8.5A9.5 9.5 0 0 1 20 15.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+  lock: '<path d="M8 10V7.5a4 4 0 0 1 8 0V10" fill="none" stroke="#b8860b" stroke-width="2.2"/><rect x="5" y="10" width="14" height="11" rx="2.8" fill="#ffca28" stroke="#b8860b" stroke-width="1.5"/><circle cx="12" cy="14.8" r="1.7" fill="#8d6e00"/><path d="M12 15.5v2.5" stroke="#8d6e00" stroke-width="1.6" stroke-linecap="round"/>',
+  home: '<path d="M4 11.2L12 4l8 7.2V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>',
+  again: '<path d="M19 12a7 7 0 1 1-2.1-5" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/><path d="M18.5 3v5h-5" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>',
+  question: '<circle cx="12" cy="12" r="10" fill="rgba(255,255,255,.18)"/><path d="M9 9.2a3 3 0 1 1 4.2 2.8c-.8.4-1.2 1-1.2 1.8v.8" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/><circle cx="12" cy="18" r="1.5" fill="#fff"/>',
+};
+const I = n => `<i class="ico"><svg viewBox="0 0 24 24">${ICONS[n]}</svg></i>`;
+function hydrateIcons(root = document) {
+  root.querySelectorAll('.ico[data-i]').forEach(el => { el.innerHTML = `<svg viewBox="0 0 24 24">${ICONS[el.dataset.i]}</svg>`; el.removeAttribute('data-i'); });
+}
 
 // ================= Сохранение =================
 const KEY = 'jumper_save_v1';
 let save = { coins: 0, best: 0, owned: ['classic'], equipped: 'classic', maps: ['meadow'], map: 'meadow',
-             ctrl: 'touch', vibro: true, gfx: 'auto', lastBonus: '', superGames: 0 };
+             ctrl: 'touch', vibro: true, gfx: 'auto', lastBonus: '', superGames: 0, lastHourly: 0 };
 function applySave(str) {
   try { const d = JSON.parse(str); if (d && typeof d === 'object') save = Object.assign(save, d); } catch (e) {}
 }
@@ -1342,8 +1413,15 @@ function fill() {
     }
     if (!q.pw && (superMode || (!q.spring && Math.random() < .2))) q.coin = { taken: false, ph: Math.random() * TAU };   // фаза своя у каждой монеты; супер-игра: монета на каждом островке
     plats.push(q);
-    if (Math.random() < .1 + .3 * d)
-      plats.push(mkPlat(rnd(0, W - PW()), topY + gap * rnd(.3, .7), 'break'));
+    // ломающаяся — посередине между соседями и не пересекается с ними по горизонтали
+    if (gap > 72 * s && Math.random() < .1 + .3 * d) {
+      const by = topY + gap * rnd(.42, .58);
+      for (let tries = 0; tries < 8; tries++) {
+        const bx = rnd(0, W - PW());
+        const clash = plats.some(o => Math.abs(o.y - by) < 34 * s && (o.type === 'moving' || Math.abs(o.x - bx) < PW() + 6 * s));
+        if (!clash) { plats.push(mkPlat(bx, by, 'break')); break; }
+      }
+    }
   }
   plats = plats.filter(q => q.y < camY + H + 60 * s);
 }
@@ -1416,8 +1494,8 @@ function update(dt) {
       const dx = q.x + PW() / 2 - pcx, dy = q.y - 28 * s - pcy, R = p.w * .5 + 14 * s;
       if (dx * dx + dy * dy < R * R) {
         q.pw.taken = true; notify('success');
-        if (q.pw.type === 'jet') { p.jet = JET_TIME; popup = { text: '🚀 ДЖЕТПАК!', col: '#ff9100', t: 1.3 }; }
-        else { p.boots = BOOTS_TIME; popup = { text: '🦘 ПРЫГАЛКИ!', col: '#66bb6a', t: 1.3 }; }
+        if (q.pw.type === 'jet') { p.jet = JET_TIME; popup = { text: 'ДЖЕТПАК!', icon: 'jet', col: '#ff9100', t: 1.3 }; }
+        else { p.boots = BOOTS_TIME; popup = { text: 'ПРЫГАЛКИ!', icon: 'boots', col: '#66bb6a', t: 1.3 }; }
         burst(q.x + PW() / 2, q.y - 28 * s, q.pw.type === 'jet' ? '#ff9100' : '#66bb6a', 12);
       }
     }
@@ -1538,12 +1616,18 @@ function drawHUD() {
     const a = Math.min(1, popup.t * 2), sc = 1 + Math.max(0, popup.t - 1) * 1.5;
     ctx.save(); ctx.globalAlpha = a; ctx.translate(W / 2, H * .3); ctx.scale(sc, sc);
     ctx.textAlign = 'center'; ctx.font = `900 ${Math.round(30 * s)}px system-ui`;
-    ctx.lineWidth = 6 * s; ctx.strokeStyle = 'rgba(0,0,0,.4)'; ctx.strokeText(popup.text, 0, 0);
-    ctx.fillStyle = popup.col; ctx.fillText(popup.text, 0, 0); ctx.restore(); ctx.textAlign = 'left';
+    const tx = 18 * s, tw = ctx.measureText(popup.text).width;
+    ctx.lineWidth = 6 * s; ctx.strokeStyle = 'rgba(0,0,0,.4)'; ctx.strokeText(popup.text, tx, 0);
+    ctx.fillStyle = popup.col; ctx.fillText(popup.text, tx, 0);
+    const ix = tx - tw / 2 - 22 * s, iy = -10 * s;                 // своя иконка слева от надписи
+    if (popup.icon === 'jet') drawJetpack(ctx, ix, iy, 30 * s, false); else drawBootsIcon(ctx, ix, iy, 32 * s);
+    ctx.restore(); ctx.textAlign = 'left';
   }
   if (superMode) {
     ctx.textAlign = 'center'; ctx.font = `900 ${Math.round(16 * s)}px system-ui`;
-    ctx.fillStyle = '#ffd54f'; ctx.strokeText('⭐ СУПЕР ИГРА', W / 2, 36 * s); ctx.fillText('⭐ СУПЕР ИГРА', W / 2, 36 * s);
+    ctx.fillStyle = '#ffd54f'; ctx.strokeText('СУПЕР ИГРА', W / 2 + 10 * s, 36 * s); ctx.fillText('СУПЕР ИГРА', W / 2 + 10 * s, 36 * s);
+    const tw = ctx.measureText('СУПЕР ИГРА').width; ctx.fillStyle = '#ffd54f'; ctx.strokeStyle = '#c67c00'; ctx.lineWidth = 1.5 * s;
+    star(ctx, W / 2 + 10 * s - tw / 2 - 12 * s, 30 * s, 9 * s, 4 * s); ctx.stroke();
     ctx.textAlign = 'left';
   }
 }
@@ -1592,7 +1676,7 @@ function show(id) {
   $('bPause').classList.toggle('hidden', state !== 'play');
 }
 function toast(msg) {
-  const t = $('toast'); t.textContent = msg; t.classList.add('on');
+  const t = $('toast'); t.innerHTML = msg; t.classList.add('on');
   clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 1800);
 }
 function refreshUI() {
@@ -1634,7 +1718,7 @@ function gameOver() {
   persist();
   $('oScore').textContent = score; $('oBest').textContent = save.best;
   $('oCoins').textContent = '+' + total;
-  $('oDetail').textContent = superMode ? '⭐ Супер-игра' : '';
+  $('oDetail').innerHTML = superMode ? I('star') + ' Супер-игра' : '';
   $('oNew').classList.toggle('hidden', !isNew);
   show('sOver');
   setTimeout(() => { if (state === 'over') offerChest(coinsBefore); }, 900);   // сначала даём увидеть счёт
@@ -1691,8 +1775,8 @@ function renderInv() {
   const left = list.filter(i => !owned.includes(i.id)).length, rb = $('bRoll');
   rb.disabled = !left;
   rb.innerHTML = left
-    ? `<span class="chest">🎁</span><span class="ct"><b>Сундук ${isSkin ? 'скинов' : 'карт'}</b><small>${isSkin ? 'Случайный закрытый скин' : 'Случайная закрытая карта'}</small></span><span class="price"><span class="coin"></span>${ROLL[invTab]}</span>`
-    : `<span class="chest">🏆</span><span class="ct"><b>Коллекция собрана!</b><small>Открыто всё</small></span>`;
+    ? `<span class="chest">${I('gift')}</span><span class="ct"><b>Сундук ${isSkin ? 'скинов' : 'карт'}</b><small>${isSkin ? 'Случайный закрытый скин' : 'Случайная закрытая карта'}</small></span><span class="price"><span class="coin"></span>${ROLL[invTab]}</span>`
+    : `<span class="chest">${I('trophy')}</span><span class="ct"><b>Коллекция собрана!</b><small>Открыто всё</small></span>`;
 }
 function invCard(it, kind) {
   const isSkin = kind === 'skin', owned = (isSkin ? save.owned : save.maps).includes(it.id);
@@ -1703,16 +1787,16 @@ function invCard(it, kind) {
   const art = document.createElement('div'); art.className = 'art';
   const cw = Math.floor((Math.min(innerWidth, 600) - 44) / 2);   // ширина карточки карты
   art.appendChild(isSkin ? skinPreview(it, 70) : mapPreview(it, cw, Math.round(cw * .56)));
-  if (!owned) { const q = document.createElement('div'); q.className = 'q'; q.textContent = isSkin ? '?' : '🔒'; art.appendChild(q); }
+  if (!owned) { const q = document.createElement('div'); q.className = 'q'; q.innerHTML = isSkin ? I('question') : I('lock'); art.appendChild(q); }
   el.appendChild(art);
-  if (eq) { const t = document.createElement('div'); t.className = 'tick'; t.textContent = '✓'; el.appendChild(t); }
+  if (eq) { const t = document.createElement('div'); t.className = 'tick'; t.innerHTML = I('check'); el.appendChild(t); }
   const info = document.createElement('div'); info.className = 'info';
   info.innerHTML = `<div class="nm"></div><div class="rl">${RAR[it.r].n}</div>`;
   info.firstChild.textContent = it.name;
   el.appendChild(info);
   el.onclick = () => {                               // тап по карточке: выбрать / подсказка
     if (spinning) return;
-    if (!owned) { toast('🎁 Выпадает из сундука'); sel(); return; }
+    if (!owned) { toast(I('gift') + ' Выпадает из сундука'); sel(); return; }
     if (!eq) select(it, kind);
   };
   return el;
@@ -1806,8 +1890,8 @@ function offerChest(before) {
       $('offTitle').textContent = 'Хватает на сундук!';
       const n = save.coins, w10 = n % 10, w100 = n % 100;
       const word = w10 === 1 && w100 !== 11 ? 'монета' : w10 >= 2 && w10 <= 4 && (w100 < 12 || w100 > 14) ? 'монеты' : 'монет';
-      $('offText').textContent = `У тебя ${n} ${word} — открой случайн${kind === 'skin' ? 'ый скин' : 'ую карту'}!`;
-      $('offGo').innerHTML = `🎁 Открыть ${kind === 'skin' ? 'скин' : 'карту'} за <span class="coin"></span> ${price}`;
+      $('offText').textContent = `У тебя ${n} ${word} — открой нов${kind === 'skin' ? 'ый скин' : 'ую карту'}!`;
+      $('offGo').innerHTML = `${I('gift')} Открыть нов${kind === 'skin' ? 'ый скин' : 'ую карту'} <span class="pricepill"><span class="coin"></span>${price}</span>`;
       $('offGo').onclick = () => {
         $('sOffer').classList.add('hidden');
         invTab = kind; openInv();
@@ -1867,7 +1951,10 @@ function drawWheel() {
     const mid = st + a / 2, flip = Math.cos(mid) < 0, sg = flip ? -1 : 1;
     c.save(); c.translate(cx, cy); c.rotate(flip ? mid + Math.PI : mid);
     c.textAlign = flip ? 'left' : 'right'; c.textBaseline = 'middle';
-    if (it.sup) { c.fillStyle = '#b71c1c'; c.font = `900 ${Math.round(R * .1)}px system-ui`; c.fillText('★ СУПЕР', sg * (R - 10), 0); }
+    if (it.sup) {
+      c.fillStyle = '#b71c1c'; c.font = `900 ${Math.round(R * .1)}px system-ui`; c.fillText('СУПЕР', sg * (R - 10), 0);
+      const tw = c.measureText('СУПЕР').width; star(c, sg * (R - 10 - tw - R * .07), 0, R * .055, R * .025);
+    }
     else {
       c.fillStyle = '#fff'; c.font = `900 ${Math.round(R * .15)}px system-ui`;
       c.shadowColor = 'rgba(0,0,0,.45)'; c.shadowBlur = 3;
@@ -1885,7 +1972,7 @@ function drawWheel() {
   hg.addColorStop(0, '#fff8e1'); hg.addColorStop(1, '#ffa000');
   c.fillStyle = hg; circ(c, cx, cy, R * .17);
   c.fillStyle = '#e65100'; c.font = `900 ${Math.round(R * .17)}px system-ui`; c.textAlign = 'center'; c.textBaseline = 'middle';
-  c.fillText('★', cx, cy + 1);
+  star(c, cx, cy, R * .1, R * .045);
 }
 $('bSpin').onclick = () => {
   if (!bonusReady() || spinAnim) return;
@@ -1917,7 +2004,7 @@ function bonusDone(pz, before) {
   notify('success'); refreshUI();
   const res = $('bonusRes');
   if (pz.sup) {
-    res.innerHTML = '⭐ СУПЕР ИГРА! ⭐<small>монетка на каждом островке</small>';
+    res.innerHTML = `<span>${I('star')} СУПЕР ИГРА! ${I('star')}</span><small>монетка на каждом островке</small>`;
     $('bPlaySuper').classList.remove('hidden');
   } else res.innerHTML = `<span>+${pz.v} <span class="coin big"></span></span>`;
   res.classList.remove('pop'); void res.offsetWidth; res.classList.add('pop');
@@ -1962,14 +2049,66 @@ const LOGO_C = ['#ff5252', '#ffb300', '#4caf50', '#29b6f6', '#ab47bc', '#ff7043'
 });
 function updMapSel(dir) {
   const m = mapById(viewMap), locked = viewLocked(), el = $('mMap');
-  el.innerHTML = locked ? `🔒 ${m.name}<small>Открой в инвентаре · ${ROLL.map} монет</small>` : `🗺 ${m.name}`;
+  el.innerHTML = locked ? `${I('lock')} ${m.name}<small>Открой в инвентаре · ${ROLL.map} монет</small>` : `${I('map')} ${m.name}`;
   if (dir) { el.classList.remove('slL', 'slR'); void el.offsetWidth; el.classList.add(dir > 0 ? 'slL' : 'slR'); }
   $('mapDots').innerHTML = MAPS.map(x => `<i class="${save.maps.includes(x.id) ? '' : 'lock'} ${x.id === viewMap ? 'on' : ''}"></i>`).join('');
   const bp = $('bPlay');
   bp.classList.toggle('locked', locked);
-  bp.textContent = locked ? '🔒 КАРТА ЗАКРЫТА' : '▶ ИГРАТЬ';
+  bp.innerHTML = locked ? I('lock') + ' КАРТА ЗАКРЫТА' : I('play') + ' ИГРАТЬ';
   $('bSuper').disabled = locked;
 }
+// ---------- Ежечасный бонус: мыльный пузырь с 50 монетами ----------
+const HOUR = 3600e3, HOURLY = 50;
+let bubblePopping = false, hourlySec = -1;
+const hourlyReady = () => Date.now() - (save.lastHourly || 0) >= HOUR;
+function updBubble() {
+  const b = $('bubble'), ready = hourlyReady();
+  if (ready && !bubblePopping) {
+    b.classList.remove('hidden');
+    const st = stageRect || { top: H * .3, h: H * .3 };
+    const bx = W / 2 + Math.sin(time * .5) * (W / 2 - 60) - 42;           // плавает влево-вправо
+    const by = st.top + st.h * .22 + Math.sin(time * 1.3) * 16 - 42;      // и покачивается
+    b.style.transform = `translate(${bx}px,${by}px)`;
+  } else if (!bubblePopping) b.classList.add('hidden');
+  const sec = Math.floor(Date.now() / 1000);
+  if (sec !== hourlySec) {                                                 // таймер раз в секунду
+    hourlySec = sec;
+    const el = $('hourly');
+    if (ready) el.classList.add('hidden');
+    else {
+      const left = Math.ceil((HOUR - (Date.now() - save.lastHourly)) / 1000);
+      el.innerHTML = `<span class="coin"></span>+${HOURLY} через ${String(Math.floor(left / 60)).padStart(2, '0')}:${String(left % 60).padStart(2, '0')}`;
+      el.classList.remove('hidden');
+    }
+  }
+}
+function flyCoins(x, y, done) {                                           // монетки летят в счётчик
+  const t = $('coinChip').querySelector('.coin').getBoundingClientRect(), tx = t.left + t.width / 2, ty = t.top + t.height / 2;
+  const N = 8;
+  for (let i = 0; i < N; i++) {
+    const c = document.createElement('span'); c.className = 'coin fly'; document.body.appendChild(c);
+    const a = i / N * TAU, sx = x + Math.cos(a) * 34, sy = y + Math.sin(a) * 34;
+    const anim = c.animate([
+      { transform: `translate(${x - 11}px,${y - 11}px) scale(.4)` },
+      { transform: `translate(${sx - 11}px,${sy - 11}px) scale(1.15)`, offset: .3 },
+      { transform: `translate(${tx - 11}px,${ty - 11}px) scale(.7)` },
+    ], { duration: 650 + i * 55, easing: 'cubic-bezier(.5,0,.7,1)' });
+    anim.onfinish = () => { c.remove(); sel(); if (i === N - 1) done(); };
+  }
+}
+$('bubble').onclick = () => {
+  if (bubblePopping || !hourlyReady()) return;
+  bubblePopping = true;
+  const b = $('bubble'), r = b.getBoundingClientRect(), before = save.coins;
+  save.lastHourly = Date.now(); save.coins += HOURLY; persist();           // сохраняем сразу
+  b.classList.add('popping'); hap('medium');
+  setTimeout(() => { b.classList.remove('popping'); b.classList.add('hidden'); bubblePopping = false; }, 360);
+  flyCoins(r.left + r.width / 2, r.top + r.height / 2, () => {
+    refreshUI(); notify('success');
+    const ch = $('coinChip'); ch.classList.remove('bump'); void ch.offsetWidth; ch.classList.add('bump');
+    offerChest(before);
+  });
+};
 function cycleMap(d) {
   const i = MAPS.findIndex(m => m.id === viewMap);
   viewMap = MAPS[(i + d + MAPS.length) % MAPS.length].id;
@@ -1997,6 +2136,7 @@ addEventListener('resize', () => { if (state === 'menu') measureStage(); });
 // ================= Старт =================
 addEventListener('resize', resize);
 resize();
+hydrateIcons();
 applyHeader();
 goMenu();
 let last = 0;
@@ -2006,9 +2146,9 @@ function loop(t) {
     update(dt); drawGame();
     // авто-качество: если долго ниже ~38 FPS — переключаемся в экономию
     ema = ema * .95 + Math.min(raw, .1) * .05;
-    if (save.gfx === 'auto' && !autoLow && ema > .026) { slowT += dt; if (slowT > 2.5) { autoLow = true; resize(); toast('✨ Включена экономия графики'); } }
+    if (save.gfx === 'auto' && !autoLow && ema > .026) { slowT += dt; if (slowT > 2.5) { autoLow = true; resize(); toast(I('sparkle') + ' Включена экономия графики'); } }
     else slowT = 0;
-  } else if (state === 'menu') drawMenuScene();
+  } else if (state === 'menu') { drawMenuScene(); updBubble(); }
   else if (dirty) {                                  // пауза/конец/панели: фон статичен — один кадр
     if (state === 'pause' || state === 'over') drawGame(); else drawMenuScene();
     dirty = false;
